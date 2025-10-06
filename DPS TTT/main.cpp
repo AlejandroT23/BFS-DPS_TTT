@@ -1,14 +1,17 @@
-//
-//  main.cpp
-//  DPS TTT
-//
-//  Created by Alejandro Toledo on 10/6/25.
-//
-
 #include <iostream>
+#include "TicTacToeBoard.h"
 
-int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+using namespace std;
+
+int main()
+{
+    TicTacToeBoard b1;
+    b1.printBoard();
+    cout << endl;
+
+    TicTacToeBoard b2("XXXOOOXXX");
+    b2.printBoard();
+    cout << endl;
+    
     return 0;
 }
