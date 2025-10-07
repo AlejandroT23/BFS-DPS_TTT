@@ -21,15 +21,15 @@ private:
     
     void printStats();
     
-    void setXWins();
-    void setOWins();
-    void setDraws();
-    void setTotal();
+    void setXWins(int num);
+    void setOWins(int num);
+    void setDraws(int num);
+    void setTotal(int num);
     
-    void getXWins();
-    void getOWins();
-    void getDraws();
-    void getTotal();
+    int getXWins();
+    int getOWins();
+    int getDraws();
+    int getTotal();
     
     int totalGames;
     int xWins;

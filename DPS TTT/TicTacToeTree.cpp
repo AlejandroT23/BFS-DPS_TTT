@@ -90,6 +90,38 @@ void TicTacToeTree::getEmptySpaces(vector < int >& empty, string str) {
     }
 }
 //--
+void TicTacToeTree::setXWins(int num) {
+    xWins = num;
+}
+//-
+void TicTacToeTree::setOWins(int num) {
+    oWins = num;
+}
+//--
+void TicTacToeTree::setDraws(int num) {
+    draws = num;
+}
+//--
+void TicTacToeTree::setTotal(int num) {
+    totalGames = num;
+}
+//--
+int TicTacToeTree::getXWins() {
+    return xWins;
+}
+//--
+int TicTacToeTree::getOWins() {
+    return oWins;
+}
+//--
+int TicTacToeTree::getDraws() {
+    return draws;
+}
+//--
+int TicTacToeTree::getTotal() {
+    return totalGames;
+}
+
 void TicTacToeTree::printStats() {
     cout << "Total Games: " << "d" << endl;
     cout << "X wins: " << "d" << endl;
