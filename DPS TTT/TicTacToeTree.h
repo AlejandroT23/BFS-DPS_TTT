@@ -20,4 +20,5 @@ private:
     };
     
     void buildFullTreeHelper(Node* children_node);
+    void getEmptySpaces(vector < int >& empty, string str);
 };
