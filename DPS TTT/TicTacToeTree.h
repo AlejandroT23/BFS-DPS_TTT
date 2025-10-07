@@ -19,6 +19,23 @@ private:
         Node* parent;
     };
     
+    void printStats();
+    
+    void setXWins();
+    void setOWins();
+    void setDraws();
+    void setTotal();
+    
+    void getXWins();
+    void getOWins();
+    void getDraws();
+    void getTotal();
+    
+    int totalGames;
+    int xWins;
+    int oWins;
+    int draws;
+    
     void buildFullTreeHelper(Node* children_node);
     void getEmptySpaces(vector < int >& empty, string str);
 };
