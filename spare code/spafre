@@ -1,0 +1,22 @@
+for (int i = 1; i < 10; i++) {
+        Node* childNode = new Node;
+        childNode->parent = root;
+        
+        childNode->board = new TicTacToeBoard();
+        
+        int currentCol = i % 3;
+        
+        if (i % 3 == 0) {
+            int currentRow = (i % 3) - 1;
+        } else {
+            int currentRow = i % 3;
+        }
+        
+//        childNode->board->setSquare(currentRow, currentCol, 'X'); REPLACE X with proper syntax
+        
+        root->children.push_back(childNode);
+    }
+    
+    for (int j = 0; j < root->children.size(); j++) {
+        buildFullTreeHelper(root->children[j]);
+    }

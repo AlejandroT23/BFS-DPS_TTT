@@ -6,37 +6,44 @@
 using namespace std;
 
 void TicTacToeTree::buildFullTree() {
-    Node* firstNode = new Node;
-    firstNode->parent = NULL;
+    Node* root = new Node;
+    root->parent = NULL;
+    root->board = new TicTacToeBoard();
     
-    firstNode->board = new TicTacToeBoard();
+    int boardDim = root->board->getBoardDimension();
+    TicTacToeBoard::PLAYER_TURN currentTurn = root->board->getPlayerTurn();
     
-    
-// ask if the TTT board will always be 3x3, but try to find a way to NOT hard code it
-// set the turn
-    
-    for (int i = 1; i < 10; i++) {
-        Node* childNode = new Node;
-        childNode->parent = firstNode;
-        
-        childNode->board = new TicTacToeBoard();
-        
-        int currentCol = i % 3;
-        
-        if (i % 3 == 0) {
-            int currentRow = (i % 3) - 1;
-        } else {
-            int currentRow = i % 3;
+    // since this is start, we might be able to get away with hard coding X
+    for (int row = 0; row < boardDim; row++){
+        for (int col = 0; col < boardDim; col++) {
+            TicTacToeBoard::SQUARE_OCCUPANT currentSpace = root->board->getSquare(row, col);
+            
+            if (currentSpace == TicTacToeBoard::EMPTY) {
+                Node* child = new Node;
+                child->parent = root;
+                child->board = new TicTacToeBoard();
+                
+                if (currentTurn == TicTacToeBoard::X_TURN) {
+                    child->board->setSquare(row, col, TicTacToeBoard::X);
+                } else {
+                    child->board->setSquare(row, col, TicTacToeBoard::O);
+                }
+                
+                root->children.push_back(child);
+                
+            }
         }
-        
-//        childNode->board->setSquare(currentRow, currentCol, 'X'); REPLACE X with proper syntax
-        
-        firstNode->children.push_back(childNode);
     }
     
-    for (int j = 0; j < firstNode->children.size(); j++) {
-        buildFullTreeHelper(firstNode->children[j]);
+    for (int k = 0; k < root->children.size(); k++) {
+        buildFullTreeHelper(root->children[k]);
     }
+    
+    //figure this out before running code
+    printStats();
+    deleteNodes(root);
+
+    
 }
 //--
 void TicTacToeTree::buildFullTreeHelper(Node* node) {
@@ -134,4 +141,8 @@ void TicTacToeTree::printStats() {
     cout << "Draws: " << draws << endl;
     cout << endl;
     cout << "Total Boards created: " << totalBoards << endl;
+}
+//--
+void TicTacToeTree::deleteNodes(Node* node) {
+    
 }

@@ -33,6 +33,8 @@ private:
     int getTotalGames();
     int getTotalBoards();
     
+    void deleteNodes(Node* node);
+
     int totalGames;
     int xWins;
     int oWins;
