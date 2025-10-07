@@ -18,4 +18,6 @@ private:
         vector < Node* > children;
         Node* parent;
     };
+    
+    void buildFullTreeHelper(Node* children_node);
 };
