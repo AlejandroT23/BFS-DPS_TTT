@@ -1,3 +1,10 @@
+#pragma once
+#include <string>
+#include <vector>
+#include "TicTacToeBoard.h"
+
+using namespace std;
+
 class TicTacToeTree
 {
 public:
