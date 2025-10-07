@@ -24,17 +24,20 @@ private:
     void setXWins(int num);
     void setOWins(int num);
     void setDraws(int num);
-    void setTotal(int num);
+    void setTotalGames(int num);
+    void setTotalBoards(int num);
     
     int getXWins();
     int getOWins();
     int getDraws();
-    int getTotal();
+    int getTotalGames();
+    int getTotalBoards();
     
     int totalGames;
     int xWins;
     int oWins;
     int draws;
+    int totalBoards;
     
     void buildFullTreeHelper(Node* children_node);
     void getEmptySpaces(vector < int >& empty, string str);

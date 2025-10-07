@@ -42,19 +42,13 @@ void TicTacToeTree::buildFullTree() {
 void TicTacToeTree::buildFullTreeHelper(Node* node) {
     string currentBoardStr = node->board->getBoardString();
     
-    // get game state
     TicTacToeBoard::BOARD_STATE currState = node->board->getBoardState();
     
     if (currState != TicTacToeBoard::INCOMPLETE_GAME) {
         
     } else {
         vector < int > emptySpaces;
-        
-        
-        
-        // get playerState
-        
-        
+        TicTacToeBoard::PLAYER_TURN currTurn = node->board->getPlayerTurn();
         
         for (int i = 0; i < emptySpaces.size(); i++) {
             Node* childNode = new Node;
@@ -65,13 +59,16 @@ void TicTacToeTree::buildFullTreeHelper(Node* node) {
             int currentPos = emptySpaces[i];
             int currentCol = currentPos % 3;
             
+            int currentRow;
+            
             if (i % 3 == 0) {
-                int currentRow = (currentPos % 3) - 1;
+                currentRow = (currentPos % 3) - 1;
             } else {
-                int currentRow = currentPos % 3;
+                currentRow = currentPos % 3;
             }
             
-    //        childNode->board->setSquare(currentRow, currentCol, 'X'); REPLACE X with proper syntax
+            TicTacToeBoard::SQUARE_OCCUPANT currSquare = childNode->board->getSquare(currentRow, currentCol);
+            childNode->board->setSquare(currentRow, currentCol, currSquare);
             
             node->children.push_back(childNode);
         }
@@ -102,8 +99,12 @@ void TicTacToeTree::setDraws(int num) {
     draws = num;
 }
 //--
-void TicTacToeTree::setTotal(int num) {
+void TicTacToeTree::setTotalGames(int num) {
     totalGames = num;
+}
+//--
+void TicTacToeTree::setTotalBoards(int num) {
+    totalBoards = num;
 }
 //--
 int TicTacToeTree::getXWins() {
@@ -118,11 +119,19 @@ int TicTacToeTree::getDraws() {
     return draws;
 }
 //--
-int TicTacToeTree::getTotal() {
+int TicTacToeTree::getTotalGames() {
     return totalGames;
 }
-
+//--
+int TicTacToeTree::getTotalBoards() {
+    return totalBoards;
+}
+//--
 void TicTacToeTree::printStats() {
-    cout << "Total Games: " << "d" << endl;
-    cout << "X wins: " << "d" << endl;
+    cout << "Total Games: " << totalGames << endl;
+    cout << "X wins: " << xWins << endl;
+    cout << "Y wins: " << oWins << endl;
+    cout << "Draws: " << draws << endl;
+    cout << endl;
+    cout << "Total Boards created: " << totalBoards << endl;
 }
