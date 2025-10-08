@@ -45,7 +45,6 @@ private:
     int draws;
     int totalBoards;
     
-    void buildFullTreeHelper(Node* children_node);
-    void newBuildFullTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN p_turn);
-    void getEmptySpaces(vector < int >& empty, string str);
+    void buildFullTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN p_turn);
+
 };
