@@ -17,34 +17,39 @@ private:
         TicTacToeBoard* board;
         vector < Node* > children;
         Node* parent;
+        
+        ~Node() {
+            delete board;
+            for (Node* child : children) {
+                delete child;
+            }
+        }
     };
     
+    // Getters and Setters for stat numbers
+    void setXWins(long long num);
+    void setOWins(long long num);
+    void setDraws(long long num);
+    void setTotalGames(long long num);
+    void setTotalBoards(long long num);
+    
+    long long getXWins();
+    long long getOWins();
+    long long getDraws();
+    long long getTotalGames();
+    long long getTotalBoards();
+    
+    // Declaration for stat numbers
+    long long xWins;
+    long long oWins;
+    long long draws;
+    long long totalGames;
+    long long totalBoards;
     int boardDim;
     
-    void printStats();
-    
-    
-    
-    void setXWins(int num);
-    void setOWins(int num);
-    void setDraws(int num);
-    void setTotalGames(int num);
-    void setTotalBoards(int num);
-    
-    int getXWins();
-    int getOWins();
-    int getDraws();
-    int getTotalGames();
-    int getTotalBoards();
-    
-    void deleteNodes(Node* node);
-
-    int totalGames;
-    int xWins;
-    int oWins;
-    int draws;
-    int totalBoards;
-    
+    // Private Functions --FullTree--
     void buildFullTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN p_turn);
+    void deleteNodes(Node* node);
+    void printStats();
 
 };

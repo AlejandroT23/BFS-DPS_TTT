@@ -6,6 +6,7 @@
 using namespace std;
 
 void TicTacToeTree::buildFullTree() {
+    cout << "The function reaches buildFullTree()" << endl;
     Node* root = new Node;
     root->parent = NULL;
     root->board = new TicTacToeBoard();
@@ -18,23 +19,31 @@ void TicTacToeTree::buildFullTree() {
     //figure this out before running code
     printStats();
     deleteNodes(root);
+    cout << "It reaches here" << endl;
 }
 //--
 void TicTacToeTree::buildFullTreeHelper(Node* currentNode, TicTacToeBoard::PLAYER_TURN p_turn) {
-    
-    setTotalBoards(totalBoards++);
+//    cout << "The function reaches buildFullTreeHelper()" << endl;
+    totalBoards++;
+    setTotalBoards(totalBoards);
     TicTacToeBoard::BOARD_STATE currBoard = currentNode->board->getBoardState();
     
+    // Possible to for setter functions to automatically increment if that is only what I can them to do?
     // Look at more efficient way to make the "if" part of this logic gate if given the chance
     if (currBoard != TicTacToeBoard::INCOMPLETE_GAME) {
+//        cout << "Finished a game" << endl;
         if (currBoard == TicTacToeBoard::X_WIN) {
-            setXWins(xWins++);
+            xWins++;
+            setXWins(xWins);
         } else if (currBoard == TicTacToeBoard::O_WIN) {
-            setOWins(oWins++);
+            oWins++;
+            setOWins(oWins);
         } else if (currBoard == TicTacToeBoard::DRAW) {
-            setDraws(draws++);
+            draws++;
+            setDraws(draws);
         }
-        setTotalGames(totalGames++);
+        totalGames++;
+        setTotalGames(totalGames);
     } else {
         for (int row = 0; row < boardDim; row++) {
             for (int col = 0; col < boardDim; col++) {
@@ -43,7 +52,7 @@ void TicTacToeTree::buildFullTreeHelper(Node* currentNode, TicTacToeBoard::PLAYE
                 if (currSpace == TicTacToeBoard::EMPTY) {
                     Node* child = new Node;
                     child->parent = currentNode;
-                    child->board = new TicTacToeBoard();
+                    child->board = new TicTacToeBoard(currentNode->board->getBoardString());
                     
                     if (p_turn == TicTacToeBoard::X_TURN) {
                         child->board->setSquare(row, col, TicTacToeBoard::X);
@@ -56,7 +65,7 @@ void TicTacToeTree::buildFullTreeHelper(Node* currentNode, TicTacToeBoard::PLAYE
             }
         }
         
-        for (int k = 0; k < currentNode->children.size(); k++) {
+        for (size_t k = 0; k < currentNode->children.size(); k++) {
             buildFullTreeHelper(currentNode->children[k], currentNode->children[k]->board->getPlayerTurn());
         }
     }
@@ -64,45 +73,45 @@ void TicTacToeTree::buildFullTreeHelper(Node* currentNode, TicTacToeBoard::PLAYE
 //---------------------------------------------------
 // SETTER FUNCTIONS FOR ALL OF THE STATS THAT WE NEED
 //---------------------------------------------------
-void TicTacToeTree::setXWins(int num) {
+void TicTacToeTree::setXWins(long long num) {
     xWins = num;
 }
 //-
-void TicTacToeTree::setOWins(int num) {
+void TicTacToeTree::setOWins(long long num) {
     oWins = num;
 }
 //--
-void TicTacToeTree::setDraws(int num) {
+void TicTacToeTree::setDraws(long long num) {
     draws = num;
 }
 //--
-void TicTacToeTree::setTotalGames(int num) {
+void TicTacToeTree::setTotalGames(long long num) {
     totalGames = num;
 }
 //--
-void TicTacToeTree::setTotalBoards(int num) {
+void TicTacToeTree::setTotalBoards(long long num) {
     totalBoards = num;
 }
 //---------------------------------------------------
 // GETTER FUNCTIONS FOR ALL OF THE STATS THAT WE NEED
 //---------------------------------------------------
-int TicTacToeTree::getXWins() {
+long long TicTacToeTree::getXWins() {
     return xWins;
 }
 //--
-int TicTacToeTree::getOWins() {
+long long TicTacToeTree::getOWins() {
     return oWins;
 }
 //--
-int TicTacToeTree::getDraws() {
+long long TicTacToeTree::getDraws() {
     return draws;
 }
 //--
-int TicTacToeTree::getTotalGames() {
+long long TicTacToeTree::getTotalGames() {
     return totalGames;
 }
 //--
-int TicTacToeTree::getTotalBoards() {
+long long TicTacToeTree::getTotalBoards() {
     return totalBoards;
 }
 //-----------------------
@@ -111,12 +120,24 @@ int TicTacToeTree::getTotalBoards() {
 void TicTacToeTree::printStats() {
     cout << "Total Games: " << totalGames << endl;
     cout << "X wins: " << xWins << endl;
-    cout << "Y wins: " << oWins << endl;
+    cout << "O wins: " << oWins << endl;
     cout << "Draws: " << draws << endl;
     cout << endl;
     cout << "Total Boards created: " << totalBoards << endl;
 }
 //--
 void TicTacToeTree::deleteNodes(Node* node) {
+//    cout << "Deleting node at: " << node << endl;
     
+    if (node->children.empty()) {
+        delete node;
+    } else {
+        while (!node->children.empty()) {
+//            cout << "Deleting child at: " << node << endl;
+            deleteNodes(node->children.back());
+            node->children.pop_back();
+        }
+        delete node;
+//        cout << "Node deleted: " << node << endl;
+    }
 }
