@@ -5,6 +5,14 @@
 
 using namespace std;
 
+TicTacToeTree::TicTacToeTree() {
+    totalBoards = 0;
+    totalGames = 0;
+    xWins = 0;
+    oWins = 0;
+    draws = 0;
+}
+
 void TicTacToeTree::buildFullTree() {
     cout << "The function reaches buildFullTree()" << endl;
     Node* root = new Node;
@@ -19,7 +27,6 @@ void TicTacToeTree::buildFullTree() {
     //figure this out before running code
     printStats();
     deleteNodes(root);
-    cout << "It reaches here" << endl;
 }
 //--
 void TicTacToeTree::buildFullTreeHelper(Node* currentNode, TicTacToeBoard::PLAYER_TURN p_turn) {

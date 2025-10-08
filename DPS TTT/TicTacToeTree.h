@@ -8,6 +8,7 @@ using namespace std;
 class TicTacToeTree
 {
 public:
+    TicTacToeTree();
     void buildFullTree();
     void breadthFirstSearchForOutcome(string boardSring, TicTacToeBoard::BOARD_STATE requestedState);
     void depthFirstSearchForOutcome(string boardSring, TicTacToeBoard::BOARD_STATE requestedState);
