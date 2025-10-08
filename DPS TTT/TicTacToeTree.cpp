@@ -12,33 +12,36 @@ TicTacToeTree::TicTacToeTree() {
     oWins = 0;
     draws = 0;
 }
-
+//--
 void TicTacToeTree::buildFullTree() {
-    cout << "The function reaches buildFullTree()" << endl;
+    // Creates initial root node, and initializes its values
     Node* root = new Node;
     root->parent = NULL;
     root->board = new TicTacToeBoard();
     
+    // Sets up the board dimensions and first player's turn
     boardDim = root->board->getBoardDimension();
     TicTacToeBoard::PLAYER_TURN currentTurn = root->board->getPlayerTurn();
     
+    // Call helper function to create the branch of boards
     buildFullTreeHelper(root, currentTurn);
     
-    //figure this out before running code
+    // Prints the stats of the game and deletes the nodes
     printStats();
     deleteNodes(root);
 }
 //--
 void TicTacToeTree::buildFullTreeHelper(Node* currentNode, TicTacToeBoard::PLAYER_TURN p_turn) {
-//    cout << "The function reaches buildFullTreeHelper()" << endl;
+    // Everytime this function is called, we increase the board count since we are iterating through the children vector
     totalBoards++;
     setTotalBoards(totalBoards);
+    
+    // We check the board state before we proceed
     TicTacToeBoard::BOARD_STATE currBoard = currentNode->board->getBoardState();
     
-    // Possible to for setter functions to automatically increment if that is only what I can them to do?
-    // Look at more efficient way to make the "if" part of this logic gate if given the chance
+    // If the state is finished, we increase stat based on final game state
     if (currBoard != TicTacToeBoard::INCOMPLETE_GAME) {
-//        cout << "Finished a game" << endl;
+        // cout << "Finished a game" << endl;
         if (currBoard == TicTacToeBoard::X_WIN) {
             xWins++;
             setXWins(xWins);
@@ -49,18 +52,23 @@ void TicTacToeTree::buildFullTreeHelper(Node* currentNode, TicTacToeBoard::PLAYE
             draws++;
             setDraws(draws);
         }
+        // Increase the total amount of games
         totalGames++;
         setTotalGames(totalGames);
     } else {
+        // Set up the row and column of the square
         for (int row = 0; row < boardDim; row++) {
             for (int col = 0; col < boardDim; col++) {
+                // Check if the square is occupied
                 TicTacToeBoard::SQUARE_OCCUPANT currSpace = currentNode->board->getSquare(row, col);
                 
+                // If the square is empty, then we create a child node
                 if (currSpace == TicTacToeBoard::EMPTY) {
                     Node* child = new Node;
                     child->parent = currentNode;
                     child->board = new TicTacToeBoard(currentNode->board->getBoardString());
                     
+                    // Place X/O depending on player turn
                     if (p_turn == TicTacToeBoard::X_TURN) {
                         child->board->setSquare(row, col, TicTacToeBoard::X);
                     } else {
@@ -72,6 +80,7 @@ void TicTacToeTree::buildFullTreeHelper(Node* currentNode, TicTacToeBoard::PLAYE
             }
         }
         
+        // Recursion through the children vector to create all the boards
         for (size_t k = 0; k < currentNode->children.size(); k++) {
             buildFullTreeHelper(currentNode->children[k], currentNode->children[k]->board->getPlayerTurn());
         }
@@ -132,19 +141,17 @@ void TicTacToeTree::printStats() {
     cout << endl;
     cout << "Total Boards created: " << totalBoards << endl;
 }
-//--
+//---------------------------------------------
+// DELETE THE NODES ONCE YOU FINISH THE PROGRAM
+//---------------------------------------------
 void TicTacToeTree::deleteNodes(Node* node) {
-//    cout << "Deleting node at: " << node << endl;
-    
     if (node->children.empty()) {
         delete node;
     } else {
         while (!node->children.empty()) {
-//            cout << "Deleting child at: " << node << endl;
             deleteNodes(node->children.back());
             node->children.pop_back();
         }
         delete node;
-//        cout << "Node deleted: " << node << endl;
     }
 }
