@@ -19,7 +19,11 @@ private:
         Node* parent;
     };
     
+    int boardDim;
+    
     void printStats();
+    
+    
     
     void setXWins(int num);
     void setOWins(int num);
@@ -42,5 +46,6 @@ private:
     int totalBoards;
     
     void buildFullTreeHelper(Node* children_node);
+    void newBuildFullTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN p_turn);
     void getEmptySpaces(vector < int >& empty, string str);
 };

@@ -10,7 +10,7 @@ void TicTacToeTree::buildFullTree() {
     root->parent = NULL;
     root->board = new TicTacToeBoard();
     
-    int boardDim = root->board->getBoardDimension();
+    boardDim = root->board->getBoardDimension();
     TicTacToeBoard::PLAYER_TURN currentTurn = root->board->getPlayerTurn();
     
     // since this is start, we might be able to get away with hard coding X
@@ -44,6 +44,46 @@ void TicTacToeTree::buildFullTree() {
     deleteNodes(root);
 
     
+}
+//--
+void TicTacToeTree::newBuildFullTreeHelper(Node* currentNode, TicTacToeBoard::PLAYER_TURN p_turn) {
+    
+    TicTacToeBoard::BOARD_STATE currBoard = currentNode->board->getBoardState();
+    
+    // Look at more efficient way to make the "if" part of this logic gate if given the chance
+    if (currBoard != TicTacToeBoard::INCOMPLETE_GAME) {
+        if (currBoard == TicTacToeBoard::X_WIN) {
+            setXWins(xWins++);
+        } else if (currBoard == TicTacToeBoard::O_WIN) {
+            setOWins(oWins++);
+        } else if (currBoard == TicTacToeBoard::DRAW) {
+            setDraws(draws++);
+        }
+    } else {
+        for (int row = 0; row < boardDim; row++) {
+            for (int col = 0; col < boardDim; col++) {
+                TicTacToeBoard::SQUARE_OCCUPANT currSpace = currentNode->board->getSquare(row, col);
+                
+                if (currSpace == TicTacToeBoard::EMPTY) {
+                    Node* child = new Node;
+                    child->parent = currentNode;
+                    child->board = new TicTacToeBoard();
+                    
+                    if (p_turn == TicTacToeBoard::X_TURN) {
+                        child->board->setSquare(row, col, TicTacToeBoard::X);
+                    } else {
+                        child->board->setSquare(row, col, TicTacToeBoard::O);
+                    }
+                    
+                    currentNode->children.push_back(child);
+                }
+            }
+        }
+        
+        for (int k = 0; k < currentNode->children.size(); k++) {
+            newBuildFullTreeHelper(currentNode->children[k], currentNode->children[k]->board->getPlayerTurn());
+        }
+    }
 }
 //--
 void TicTacToeTree::buildFullTreeHelper(Node* node) {
