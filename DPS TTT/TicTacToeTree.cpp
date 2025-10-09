@@ -218,6 +218,7 @@ void TicTacToeTree::printStats() {
     cout << "Draws: " << draws << endl;
     cout << endl;
     cout << "Total Boards created: " << totalBoards << endl;
+    cout << endl;
 }
 //---------------------------------------------
 // DELETE THE NODES ONCE YOU FINISH THE PROGRAM
