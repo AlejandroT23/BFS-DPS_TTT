@@ -9,8 +9,9 @@ int main()
     TicTacToeTree tree;
     tree.buildFullTree();
     
-    string boardStr = "X---O----";
+    string boardStr = "X--O-----";
     tree.breadthFirstSearchForOutcome(boardStr, TicTacToeBoard::BOARD_STATE::X_WIN);
+    tree.depthFirstSearchForOutcome(boardStr, TicTacToeBoard::BOARD_STATE::X_WIN);
     
     return 0;
 }

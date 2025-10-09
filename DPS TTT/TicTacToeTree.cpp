@@ -140,6 +140,56 @@ void TicTacToeTree::breadthFirstSearchForOutcome(string board, TicTacToeBoard::B
     
     deleteNodes(root);
 }
+void TicTacToeTree::depthFirstSearchForOutcome(string board, TicTacToeBoard::BOARD_STATE requestedState) {
+    Node* root = new Node;
+    root->parent = NULL;
+    root->board = new TicTacToeBoard(board);
+    TicTacToeBoard::PLAYER_TURN p_turn;
+    boardDim = root->board->getBoardDimension();
+    
+    deque < Node* > queue;
+    queue.push_back(root);
+    
+    totalBoards = 1;
+    
+    while (!queue.empty()) {
+        Node* current = queue.back();
+        p_turn = current->board->getPlayerTurn();
+        
+        if (current->board->getBoardState() == requestedState) {
+            deque < Node* > winPath;
+            getWinPath(current, winPath);
+            printWinPath(winPath, totalBoards);
+            break;
+        } else {
+            for (int row = 0; row < boardDim; row++){
+                for (int col = 0; col < boardDim; col++) {
+                    TicTacToeBoard::SQUARE_OCCUPANT currSquare = current->board->getSquare(row, col);
+                    
+                    if(currSquare == TicTacToeBoard::EMPTY) {
+                        Node* child = new Node;
+                        child->parent = current;
+                        child->board = new TicTacToeBoard(current->board->getBoardString());
+                        
+                        if (p_turn == TicTacToeBoard::X_TURN) {
+                            child->board->setSquare(row, col, TicTacToeBoard::X);
+                        } else {
+                            child->board->setSquare(row, col, TicTacToeBoard::O);
+                        }
+                        
+                        // Figure out if vector needed?
+                        current->children.push_back(child);
+                        queue.push_back(child);
+                        totalBoards++;
+                    }
+                }
+            }
+            queue.pop_front();
+        }
+    }
+    
+    deleteNodes(root);
+}
 //--
 void TicTacToeTree::getWinPath(Node* currentNode, deque < Node* >& nodes) {
     if (currentNode->parent != NULL) {
@@ -163,6 +213,7 @@ void TicTacToeTree::printWinPath(deque < Node* >& path, long long boardNum) {
     }
     
     cout << "There were " << boardNum << " boards created." << endl;
+    cout << endl;
 }
 //---------------------------------------------------
 // SETTER FUNCTIONS FOR ALL OF THE STATS THAT WE NEED
