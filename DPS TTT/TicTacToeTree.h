@@ -29,40 +29,19 @@ private:
         }
     };
     
-    // Getters and Setters for stat numbers
-    void setXWins(long long num);
-    void setOWins(long long num);
-    void setDraws(long long num);
-    void setTotalGames(long long num);
-    void setTotalBoards(long long num);
-    
-    long long getXWins();
-    long long getOWins();
-    long long getDraws();
-    long long getTotalGames();
-    long long getTotalBoards();
-    
-    // Declaration for stat numbers
-    // Pass these by reference
-    long long xWins;
-    long long oWins;
-    long long draws;
-    long long totalGames;
-    long long totalBoards;
+    // Stores Dimension size, used throughout the TicTacToeTree.cpp file
     int boardDim;
     
     // Private Functions --Full Tree--
-    void buildFullTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN p_turn);
-    void deleteNodes(Node* node);
-    void printStats();
+    void buildFullTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN p_turn, int& xWins, int& oWins, int& draws, int& total_g, int& total_b);
     
     // Private Functions --Search Functions--
     void searchHelper(string board, TicTacToeBoard::BOARD_STATE requestedState, string searchType);
     void getWinPath(Node* currentNode, deque < Node* >& nodes);
-    void printWinPath(deque < Node* >& path, long long boardNum);
+    void printWinPath(deque < Node* >& path, int boards, string searchType);
     
-    //--
-    void createChild(Node* &currentNode, TicTacToeBoard::PLAYER_TURN p_turn);
-   
+    // Private Functions --Universal Helpers--
+    void createChild(Node* &currentNode, TicTacToeBoard::PLAYER_TURN p_turn, int& totalBoards);
+    void deleteNodes(Node* node);
 
 };
