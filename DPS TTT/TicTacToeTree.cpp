@@ -104,7 +104,8 @@ void TicTacToeTree::searchHelper(string board, TicTacToeBoard::BOARD_STATE reque
         if (current->board->getBoardState() == requestedState) {
             deque < Node* > winPath;
             getWinPath(current, winPath);
-            printWinPath(winPath, totalBoards, searchType);
+            
+            printWinPath(winPath, totalBoards, searchType, getTypeGame(requestedState));
             break;
         } else {
             createChild(current, p_turn, totalBoards);
@@ -141,6 +142,17 @@ void TicTacToeTree::createChild(Node* &current, TicTacToeBoard::PLAYER_TURN p_tu
     }
 }
 //--
+string TicTacToeTree::getTypeGame(TicTacToeBoard::BOARD_STATE state) {
+    if (state == TicTacToeBoard::X_WIN) {
+        return "X";
+    } else if (state == TicTacToeBoard::O_WIN) {
+        return "O";
+    } else {
+        return "Draw";
+    }
+}
+    
+//--
 void TicTacToeTree::getWinPath(Node* currentNode, deque < Node* >& nodes) {
     if (currentNode->parent != NULL) {
         nodes.push_front(currentNode);
@@ -150,8 +162,8 @@ void TicTacToeTree::getWinPath(Node* currentNode, deque < Node* >& nodes) {
     }
 }
 //--
-void TicTacToeTree::printWinPath(deque < Node* >& path, int boards, string search) {
-    cout << search << " X Win:" << endl;
+void TicTacToeTree::printWinPath(deque < Node* >& path, int boards, string search, string winType) {
+    cout << search << " " << winType << " Win:" << endl;
     int counter = 0;
     
     for (Node* node : path) {

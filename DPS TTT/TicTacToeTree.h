@@ -37,8 +37,9 @@ private:
     
     // Private Functions --Search Functions--
     void searchHelper(string board, TicTacToeBoard::BOARD_STATE requestedState, string searchType);
+    string getTypeGame(TicTacToeBoard::BOARD_STATE state);
     void getWinPath(Node* currentNode, deque < Node* >& nodes);
-    void printWinPath(deque < Node* >& path, int boards, string searchType);
+    void printWinPath(deque < Node* >& path, int boards, string searchType, string winType);
     
     // Private Functions --Universal Helpers--
     void createChild(Node* &currentNode, TicTacToeBoard::PLAYER_TURN p_turn, int& totalBoards);
