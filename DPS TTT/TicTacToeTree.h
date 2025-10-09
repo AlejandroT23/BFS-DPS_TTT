@@ -41,6 +41,7 @@ private:
     long long getTotalBoards();
     
     // Declaration for stat numbers
+    // Pass these by reference
     long long xWins;
     long long oWins;
     long long draws;

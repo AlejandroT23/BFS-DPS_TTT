@@ -31,6 +31,7 @@ void TicTacToeTree::buildFullTree() {
     deleteNodes(root);
 }
 //--
+//-- PASS STATS BY REFERENCE
 void TicTacToeTree::buildFullTreeHelper(Node* currentNode, TicTacToeBoard::PLAYER_TURN p_turn) {
     // Everytime this function is called, we increase the board count since we are iterating through the children vector
     totalBoards++;
