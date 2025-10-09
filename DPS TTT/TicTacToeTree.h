@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <deque>
 #include "TicTacToeBoard.h"
+
 
 using namespace std;
 
@@ -53,5 +55,9 @@ private:
     void buildFullTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN p_turn);
     void deleteNodes(Node* node);
     void printStats();
+    
+    // Private Functions --BPS--
+    void getWinPath(Node* currentNode, deque < Node* >& nodes);
+    void printWinPath(deque < Node* >& path, long long boardNum);
 
 };

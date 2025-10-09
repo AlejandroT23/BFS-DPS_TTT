@@ -1,5 +1,6 @@
 #include "TicTacToeTree.h"
 #include "TicTacToeBoard.h"
+#include <deque>
 #include <iostream>
 #include <cmath>
 
@@ -86,6 +87,79 @@ void TicTacToeTree::buildFullTreeHelper(Node* currentNode, TicTacToeBoard::PLAYE
             buildFullTreeHelper(currentNode->children[k], currentNode->children[k]->board->getPlayerTurn());
         }
     }
+}
+//--
+void TicTacToeTree::breadthFirstSearchForOutcome(string board, TicTacToeBoard::BOARD_STATE requestedState) {
+    Node* root = new Node;
+    root->parent = NULL;
+    root->board = new TicTacToeBoard(board);
+    TicTacToeBoard::PLAYER_TURN p_turn;
+    
+    deque < Node* > queue;
+    queue.push_back(root);
+    
+    totalBoards = 0;
+    
+    while (!queue.empty()) {
+        Node* current = queue.front();
+        p_turn = current->board->getPlayerTurn();
+        
+        totalBoards++;
+        
+        if (current->board->getBoardState() == requestedState) {
+            deque < Node* > winPath;
+            getWinPath(current, winPath);
+            break;
+        } else {
+            for (int row = 0; row < boardDim; row++){
+                for (int col = 0; col < boardDim; col++) {
+                    TicTacToeBoard::SQUARE_OCCUPANT currSquare = current->board->getSquare(row, col);
+                    
+                    if(currSquare == TicTacToeBoard::EMPTY) {
+                        Node* child = new Node;
+                        child->parent = current;
+                        child->board = new TicTacToeBoard(current->board->getBoardString());
+                        
+                        if (p_turn == TicTacToeBoard::X_TURN) {
+                            child->board->setSquare(row, col, TicTacToeBoard::X);
+                        } else {
+                            child->board->setSquare(row, col, TicTacToeBoard::O);
+                        }
+                        
+                        // Figure out if vector needed?
+                        current->children.push_back(child);
+                        queue.push_back(child);
+                    }
+                }
+            }
+            
+            queue.pop_front();
+        }
+    }
+    
+    deleteNodes(root);
+}
+//--
+void TicTacToeTree::getWinPath(Node* currentNode, deque < Node* >& nodes) {
+    if (currentNode->parent != NULL) {
+        nodes.push_front(currentNode);
+        getWinPath(currentNode->parent, nodes);
+    }
+}
+//--
+void TicTacToeTree::printWinPath(deque < Node* >& path, long long boardNum) {
+    // MAKE THIS UNIVERSAL
+    cout << "BFS X Win:" << endl;
+    int counter = 0;
+    
+    for (Node* node : path) {
+        counter++;
+        cout << counter << "." << endl;
+        node->board->printBoard();
+        cout << endl;
+    }
+    
+    cout << "There were " << boardNum << " boards created." << endl;
 }
 //---------------------------------------------------
 // SETTER FUNCTIONS FOR ALL OF THE STATS THAT WE NEED
