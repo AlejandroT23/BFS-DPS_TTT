@@ -94,21 +94,21 @@ void TicTacToeTree::breadthFirstSearchForOutcome(string board, TicTacToeBoard::B
     root->parent = NULL;
     root->board = new TicTacToeBoard(board);
     TicTacToeBoard::PLAYER_TURN p_turn;
+    boardDim = root->board->getBoardDimension();
     
     deque < Node* > queue;
     queue.push_back(root);
     
-    totalBoards = 0;
+    totalBoards = 1;
     
     while (!queue.empty()) {
         Node* current = queue.front();
         p_turn = current->board->getPlayerTurn();
         
-        totalBoards++;
-        
         if (current->board->getBoardState() == requestedState) {
             deque < Node* > winPath;
             getWinPath(current, winPath);
+            printWinPath(winPath, totalBoards);
             break;
         } else {
             for (int row = 0; row < boardDim; row++){
@@ -129,6 +129,7 @@ void TicTacToeTree::breadthFirstSearchForOutcome(string board, TicTacToeBoard::B
                         // Figure out if vector needed?
                         current->children.push_back(child);
                         queue.push_back(child);
+                        totalBoards++;
                     }
                 }
             }
@@ -144,6 +145,8 @@ void TicTacToeTree::getWinPath(Node* currentNode, deque < Node* >& nodes) {
     if (currentNode->parent != NULL) {
         nodes.push_front(currentNode);
         getWinPath(currentNode->parent, nodes);
+    } else {
+        nodes.push_front(currentNode);
     }
 }
 //--
