@@ -90,6 +90,94 @@ void TicTacToeTree::buildFullTreeHelper(Node* currentNode, TicTacToeBoard::PLAYE
 }
 //--
 void TicTacToeTree::breadthFirstSearchForOutcome(string board, TicTacToeBoard::BOARD_STATE requestedState) {
+//    Node* root = new Node;
+//    root->parent = NULL;
+//    root->board = new TicTacToeBoard(board);
+//    TicTacToeBoard::PLAYER_TURN p_turn;
+//    boardDim = root->board->getBoardDimension();
+//    
+//    deque < Node* > queue;
+//    queue.push_back(root);
+//    
+//    totalBoards = 1;
+//    
+//    while (!queue.empty()) {
+//        Node* current = queue.front();
+//        queue.pop_front();
+//        p_turn = current->board->getPlayerTurn();
+//        
+//        if (current->board->getBoardState() == requestedState) {
+//            deque < Node* > winPath;
+//            getWinPath(current, winPath);
+//            printWinPath(winPath, totalBoards);
+//            break;
+//        } else {
+//            for (int row = 0; row < boardDim; row++){
+//                for (int col = 0; col < boardDim; col++) {
+//                    TicTacToeBoard::SQUARE_OCCUPANT currSquare = current->board->getSquare(row, col);
+//                    
+//                    if(currSquare == TicTacToeBoard::EMPTY) {
+//                        Node* child = new Node;
+//                        child->parent = current;
+//                        child->board = new TicTacToeBoard(current->board->getBoardString());
+//                        
+//                        if (p_turn == TicTacToeBoard::X_TURN) {
+//                            child->board->setSquare(row, col, TicTacToeBoard::X);
+//                        } else {
+//                            child->board->setSquare(row, col, TicTacToeBoard::O);
+//                        }
+//                        
+//                        // Figure out if vector needed?
+//                        current->children.push_back(child);
+//                        queue.push_back(child);
+//                        totalBoards++;
+//                    }
+//                }
+//            }
+//            
+////            queue.pop_front();
+//        }
+//    }
+//    
+//    deleteNodes(root);
+    searchHelper(board, requestedState, "BFS");
+}
+void TicTacToeTree::depthFirstSearchForOutcome(string board, TicTacToeBoard::BOARD_STATE requestedState) {
+//    Node* root = new Node;
+//    root->parent = NULL;
+//    root->board = new TicTacToeBoard(board);
+//    TicTacToeBoard::PLAYER_TURN p_turn;
+//    boardDim = root->board->getBoardDimension();
+//    
+//    deque < Node* > queue;
+//    queue.push_back(root);
+//    
+//    totalBoards = 1;
+//    
+//    while (!queue.empty()) {
+//        Node* current = queue.back();
+//        queue.pop_back();
+//        p_turn = current->board->getPlayerTurn();
+//        
+//        if (current->board->getBoardState() == requestedState) {
+//            deque < Node* > winPath;
+//            getWinPath(current, winPath);
+//            printWinPath(winPath, totalBoards);
+//            break;
+//        } else {
+//            createChild(current, p_turn);
+//            
+//            for (Node* n : current->children) {
+//                queue.push_back(n);
+//            }
+//        }
+//    }
+//    
+//    deleteNodes(root);
+    searchHelper(board, requestedState, "DFS");
+}
+//--
+void TicTacToeTree::searchHelper(string board, TicTacToeBoard::BOARD_STATE requestedState, string searchType) {
     Node* root = new Node;
     root->parent = NULL;
     root->board = new TicTacToeBoard(board);
@@ -102,7 +190,18 @@ void TicTacToeTree::breadthFirstSearchForOutcome(string board, TicTacToeBoard::B
     totalBoards = 1;
     
     while (!queue.empty()) {
-        Node* current = queue.front();
+        
+        Node* current;
+        
+        // if BPS, we grab from front, otherwise we grab from back
+        if (searchType == "BFS") {
+            current = queue.front();
+            queue.pop_front();
+        } else {
+            current = queue.back();
+            queue.pop_back();
+        }
+        
         p_turn = current->board->getPlayerTurn();
         
         if (current->board->getBoardState() == requestedState) {
@@ -111,84 +210,38 @@ void TicTacToeTree::breadthFirstSearchForOutcome(string board, TicTacToeBoard::B
             printWinPath(winPath, totalBoards);
             break;
         } else {
-            for (int row = 0; row < boardDim; row++){
-                for (int col = 0; col < boardDim; col++) {
-                    TicTacToeBoard::SQUARE_OCCUPANT currSquare = current->board->getSquare(row, col);
-                    
-                    if(currSquare == TicTacToeBoard::EMPTY) {
-                        Node* child = new Node;
-                        child->parent = current;
-                        child->board = new TicTacToeBoard(current->board->getBoardString());
-                        
-                        if (p_turn == TicTacToeBoard::X_TURN) {
-                            child->board->setSquare(row, col, TicTacToeBoard::X);
-                        } else {
-                            child->board->setSquare(row, col, TicTacToeBoard::O);
-                        }
-                        
-                        // Figure out if vector needed?
-                        current->children.push_back(child);
-                        queue.push_back(child);
-                        totalBoards++;
-                    }
-                }
-            }
+            createChild(current, p_turn);
             
-            queue.pop_front();
+            for (Node* n : current->children) {
+                queue.push_back(n);
+            }
         }
     }
     
     deleteNodes(root);
 }
-void TicTacToeTree::depthFirstSearchForOutcome(string board, TicTacToeBoard::BOARD_STATE requestedState) {
-    Node* root = new Node;
-    root->parent = NULL;
-    root->board = new TicTacToeBoard(board);
-    TicTacToeBoard::PLAYER_TURN p_turn;
-    boardDim = root->board->getBoardDimension();
-    
-    deque < Node* > queue;
-    queue.push_back(root);
-    
-    totalBoards = 1;
-    
-    while (!queue.empty()) {
-        Node* current = queue.back();
-        p_turn = current->board->getPlayerTurn();
-        
-        if (current->board->getBoardState() == requestedState) {
-            deque < Node* > winPath;
-            getWinPath(current, winPath);
-            printWinPath(winPath, totalBoards);
-            break;
-        } else {
-            for (int row = 0; row < boardDim; row++){
-                for (int col = 0; col < boardDim; col++) {
-                    TicTacToeBoard::SQUARE_OCCUPANT currSquare = current->board->getSquare(row, col);
-                    
-                    if(currSquare == TicTacToeBoard::EMPTY) {
-                        Node* child = new Node;
-                        child->parent = current;
-                        child->board = new TicTacToeBoard(current->board->getBoardString());
-                        
-                        if (p_turn == TicTacToeBoard::X_TURN) {
-                            child->board->setSquare(row, col, TicTacToeBoard::X);
-                        } else {
-                            child->board->setSquare(row, col, TicTacToeBoard::O);
-                        }
-                        
-                        // Figure out if vector needed?
-                        current->children.push_back(child);
-                        queue.push_back(child);
-                        totalBoards++;
-                    }
+//--
+void TicTacToeTree::createChild(Node* &current, TicTacToeBoard::PLAYER_TURN p_turn) {
+    for (int row = 0; row < boardDim; row++){
+        for (int col = 0; col < boardDim; col++) {
+            TicTacToeBoard::SQUARE_OCCUPANT currSquare = current->board->getSquare(row, col);
+            
+            if(currSquare == TicTacToeBoard::EMPTY) {
+                Node* child = new Node;
+                child->parent = current;
+                child->board = new TicTacToeBoard(current->board->getBoardString());
+                
+                if (p_turn == TicTacToeBoard::X_TURN) {
+                    child->board->setSquare(row, col, TicTacToeBoard::X);
+                } else {
+                    child->board->setSquare(row, col, TicTacToeBoard::O);
                 }
+                
+                current->children.push_back(child);
+                totalBoards++;
             }
-            queue.pop_front();
         }
     }
-    
-    deleteNodes(root);
 }
 //--
 void TicTacToeTree::getWinPath(Node* currentNode, deque < Node* >& nodes) {

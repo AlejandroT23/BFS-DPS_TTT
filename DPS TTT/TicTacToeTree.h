@@ -51,13 +51,18 @@ private:
     long long totalBoards;
     int boardDim;
     
-    // Private Functions --FullTree--
+    // Private Functions --Full Tree--
     void buildFullTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN p_turn);
     void deleteNodes(Node* node);
     void printStats();
     
-    // Private Functions --BPS--
+    // Private Functions --Search Functions--
+    void searchHelper(string board, TicTacToeBoard::BOARD_STATE requestedState, string searchType);
     void getWinPath(Node* currentNode, deque < Node* >& nodes);
     void printWinPath(deque < Node* >& path, long long boardNum);
+    
+    //--
+    void createChild(Node* &currentNode, TicTacToeBoard::PLAYER_TURN p_turn);
+   
 
 };
